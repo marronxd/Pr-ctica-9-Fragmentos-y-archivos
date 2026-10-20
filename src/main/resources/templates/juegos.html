@@ -1,0 +1,25 @@
+<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.w3.org/1999/xhtml">
+    <title>Catálogo de Juegos - GamesShop</title>
+    <main class="container">
+        <div class="page-header">
+            <h2 class="text-gradient">Catálogo de Juegos</h2>
+            <a th:href="@{/juegos/nuevo}" class="btn btn-primary">+ Nuevo Juego</a>
+        </div>
+
+        <div class="grid">
+            <div class="panel juegos" th:each="juego : ${juegos}">
+                <img th:src="${#strings.startsWith(juego.portadaUrl, 'http')} ? ${juego.portadaUrl} : @{/uploads/{img}(img=${juego.portadaUrl})}"
+                     alt="Portada"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400'">
+                <div class="game-content">
+                    <h3 th:text="${juego.titulo}">Título</h3>
+                    <p th:text="${juego.descripcion}">Descripción</p>
+                </div>
+            </div>
+
+            <div class="empty" th:if="${#lists.isEmpty(juegos)}">
+                No hay juegos en la bóveda aún. ¡Sé el primero en subir uno!
+            </div>
+        </div>
+    </main>
+</th:block>

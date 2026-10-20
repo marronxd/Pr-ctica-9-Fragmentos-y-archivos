@@ -1,0 +1,42 @@
+<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.w3.org/1999/xhtml">
+    <title>Subir Juego - GamesShop</title>
+
+    <main class="container">
+        <div class="panel" style="max-width: 600px; margin: 0 auto;">
+            <h2 class="text-gradient" style="margin-top: 0;">Añadir Nuevo Juego</h2>
+            <p class="muted" style="margin-bottom: 30px;">
+                Sube la información y la portada de un nuevo juego a la bóveda.
+            </p>
+
+            <!-- enctype="multipart/form-data" es lo que permite empaquetar archivos -->
+            <form th:action="@{/juegos}" method="post" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="titulo" class="form-label">Título del Juego</label>
+                    <input type="text" id="titulo" name="titulo" required class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="descripcion" class="form-label">Descripción Breve</label>
+                    <textarea id="descripcion" name="descripcion" rows="4" required
+                              class="form-control" style="resize: vertical;"></textarea>
+                </div>
+
+                <div class="form-group upload-box">
+                    <label for="portada" class="form-label" style="color: var(--primary-light);">
+                        Subir Portada (Imagen)
+                    </label>
+                    <input type="file" id="portada" name="portada" accept="image/*" required
+                           class="form-control" style="border: none; background: transparent;">
+                    <p class="muted" style="font-size: 0.9rem; margin-top: 10px; margin-bottom: 0;">
+                        El tamaño máximo configurado en el servidor es de <b>2MB</b> por archivo.
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">
+                    Guardar en la Bóveda
+                </button>
+            </form>
+        </div>
+    </main>
+</th:block>

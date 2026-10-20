@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jugando con Fragmentos</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div class ="panel" style="margin-bottom: 30px;">
+        <h3>El Fragmento</h3>
+        <p>Definimos el fragmento usando
+            <code>th:fragment="miFragmento"</code></p>
+        <div th:fragment="miFragmento" style="background: linear-gradient(var(--primary, var(--secondary)))">
+            Hola soy el contenido del fragmento
+        </div>
+    </div>
+
+    <div class ="panel" style="margin-bottom: 30px;">
+        <h3>usando el fragmento con el replace</h3>
+
+        <section th:replace="~{::miFragmento}">
+            Este texto y esta sección, van a desaparecer.
+        </section>
+    </div>
+
+    <div class ="panel" style="margin-bottom: 30px;">
+        <h3>usando el fragmento con el insert</h3>
+
+        <section th:insert="~{::miFragmento}" style="border-style: dashed; border-color: aqua; border-width: 3px; ">
+            Este texto va a desaparecer pero la seccioón se mantiene
+        </section>
+    </div>
+
+    <div class ="panel" style="margin-bottom: 30px;">
+        <h3>usando el fragmento con el include</h3>
+
+        <section th:include="~{::miFragmento}">
+            Este texto se reemplazará por otro texto del fragmento, pero se va a perder el color original del fragmento
+        </section>
+    </div>
+</body>
+</html>
