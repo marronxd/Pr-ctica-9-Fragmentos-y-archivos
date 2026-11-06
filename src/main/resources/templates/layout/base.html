@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(tittle, content)" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)" lang="en">
 <head>
     <meta charset="UTF-8">
     <title th:replace="${title}">Title</title>
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
 
     <nav>
-        <a th:href="@{/juegos}" class="nav-brand"> GamesShop😼🐈</a>
+        <a th:href="@{/juegos}" class="nav-brand">GamesShop</a>
         <div class="nav-links">
-            <a th:href="@{/juegos}">Catálogo</a>
-            <a th:href="@{/juegos/nuevo}">Subir juego</a>
-            <a th:href="@{/fragments-demo}" style ="color:var(--green); margin-left: 2rem;">[Teoría]</a>
+            <a th:href="@{/juegos}">Inicio</a>
+            <a th:href="@{/fragments-demo}" style ="color:var(--green); margin-left: 2rem;">Fragmentos</a>
+
+            <th:block th:if="${session.usuario_id != null}" >
+                <a th:href="@{/mis-juegos}">Mis tesoros</a>
+                <a th:href="@{/juegos/nuevo}">Subir juego</a>
+                <a th:href="@{/logout}">Cerrar Sesión</a>
+            </th:block>
+
+            <th:block th:if="${session.usuario_id == null}">
+                <a th:href="@{/login}">Iniciar Sesión</a>
+                <a th:href="@{/registro}">Registrarse</a>
+            </th:block>
         </div>
     </nav>
 

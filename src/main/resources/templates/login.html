@@ -1,0 +1,39 @@
+<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+    <title>Iniciar Sesión - GameVault</title>
+    <main class="container">
+        <div class="panel" style="max-width: 450px; margin: 40px auto;">
+
+            <h2 class="text-gradient" style="margin-top: 0;">Iniciar Sesión</h2>
+
+            <!-- 'error' lo manda AuthController cuando el correo o la contraseña no coinciden -->
+            <p th:if="${error}" th:text="${error}" class="badge badge-danger" style="display: block; padding: 10px; margin-bottom: 20px;">Error</p>
+
+            <!-- 'mensaje' lo manda AuthController cuando el login es correcto -->
+            <p th:if="${mensaje}" th:text="${mensaje}" class="badge badge-success" style="display: block; padding: 10px; margin-bottom: 20px;">Bienvenido</p>
+
+            <!-- 'param.registrado' lee el ?registrado=true de la URL -->
+            <p th:if="${param.registrado}" class="badge badge-success" style="display: block; padding: 10px; margin-bottom: 20px;">
+                ¡Registro exitoso! Ahora inicia sesión.
+            </p>
+
+            <form th:action="@{/login}" method="post">
+                <!-- Los 'name' deben coincidir con los @RequestParam del controlador -->
+                <div class="form-group">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" required class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" id="password" name="password" required class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+            </form>
+
+            <p style="color: var(--text-muted); text-align: center; margin-bottom: 0;">
+                ¿No tienes cuenta? <a th:href="@{/registro}">Regístrate aquí</a>
+            </p>
+        </div>
+    </main>
+</th:block>

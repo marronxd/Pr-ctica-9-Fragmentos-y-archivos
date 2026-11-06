@@ -1,0 +1,45 @@
+<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+    <title>Mis Juegos - GameVault</title>
+    <main class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div>
+                <h2 class="text-gradient" style="margin-bottom: 5px;">Mi Bóveda</h2>
+                <p style="color: var(--text-muted); margin: 0;">Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>. Aquí puedes gestionar tus juegos.</p>
+            </div>
+            <a href="/juegos/nuevo" class="btn btn-primary">+ Nuevo Juego</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(juegos)}" style="text-align: center; padding: 50px; background: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color);">
+            <h3 style="margin-top: 0;">Aún no tienes juegos</h3>
+            <p style="color: var(--text-muted);">Sube tu primer juego para empezar a construir tu bóveda.</p>
+            <a href="/juegos/nuevo" class="btn btn-primary" style="margin-top: 10px;">Subir Juego</a>
+        </div>
+
+        <div class="grid" th:unless="${#lists.isEmpty(juegos)}">
+            <div th:each="juego : ${juegos}" class="panel" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img th:src="${#strings.startsWith(juego.portadaUrl, 'http')} ? ${juego.portadaUrl} : @{/uploads/{img}(img=${juego.portadaUrl})}"
+                     alt="Portada"
+                     style="width: 100%; height: 250px; object-fit: cover; display: block;" />
+
+                <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <h3 th:text="${juego.titulo}" style="margin: 0;">Título del Juego</h3>
+                        <span th:text="${juego.precio != null ? '$' + juego.precio : 'Gratis'}" style="font-weight: bold; color: var(--primary);">Precio</span>
+                    </div>
+                    
+                    <span th:text="${juego.categoria}" style="display: inline-block; background: rgba(0, 255, 136, 0.1); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-bottom: 10px; width: fit-content;">Categoría</span>
+                    
+                    <p th:text="${juego.descripcion}" style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin: 0; margin-bottom: 20px; flex-grow: 1;">Descripción breve.</p>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: auto;">
+                        <a th:href="@{/juegos/editar/{id}(id=${juego.id})}" class="btn btn-secondary" style="flex: 1; text-align: center; background: rgba(50, 150, 255, 0.1); color: #6bb5ff; border-color: rgba(50, 150, 255, 0.2);">Editar</a>
+                        
+                        <form th:action="@{/juegos/eliminar/{id}(id=${juego.id})}" method="post" style="flex: 1; display: flex;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este juego de tu bóveda?');">
+                            <button type="submit" class="btn btn-secondary" style="width: 100%; background: rgba(255, 50, 50, 0.1); color: #ff6b6b; border-color: rgba(255, 50, 50, 0.2);">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</th:block>

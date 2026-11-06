@@ -1,4 +1,4 @@
-package burciaga.aaron.GamesShop;
+package com.example.GameVault;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

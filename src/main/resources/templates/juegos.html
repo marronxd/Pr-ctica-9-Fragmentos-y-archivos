@@ -1,25 +1,45 @@
-<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.w3.org/1999/xhtml">
-    <title>Catálogo de Juegos - GamesShop</title>
+<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+    <title>Catálogo de Juegos - GameVault</title>
+    <!-- Catálogo público: cualquiera lo ve, con o sin sesión.
+         Los botones de Editar y Eliminar ahora viven en mis-juegos.html, donde sólo ves tus juegos. -->
     <main class="container">
-        <div class="page-header">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <h2 class="text-gradient">Catálogo de Juegos</h2>
-            <a th:href="@{/juegos/nuevo}" class="btn btn-primary">+ Nuevo Juego</a>
+        </div>
+
+        <!-- BARRA DE BÚSQUEDA -->
+        <div style="margin-bottom: 30px;">
+            <form action="/juegos" method="get" style="display: flex; gap: 10px;">
+                <input type="text" name="buscar" th:value="${busquedaActual}" placeholder="Buscar juego por título o categoría..." style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-color);">
+                <button type="submit" class="btn btn-secondary">Buscar</button>
+                <a th:if="${busquedaActual != null}" href="/juegos" class="btn btn-secondary" style="background: var(--bg-surface);">Limpiar</a>
+            </form>
         </div>
 
         <div class="grid">
-            <div class="panel juegos" th:each="juego : ${juegos}">
+
+            <div th:each="juego : ${juegos}" class="panel" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+
                 <img th:src="${#strings.startsWith(juego.portadaUrl, 'http')} ? ${juego.portadaUrl} : @{/uploads/{img}(img=${juego.portadaUrl})}"
                      alt="Portada"
-                     onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400'">
-                <div class="game-content">
-                    <h3 th:text="${juego.titulo}">Título</h3>
-                    <p th:text="${juego.descripcion}">Descripción</p>
+                     style="width: 100%; height: 300px; object-fit: cover; display: block;" />
+
+                <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <h3 th:text="${juego.titulo}" style="margin: 0;">Título del Juego</h3>
+                        <span th:text="${juego.precio != null ? '$' + juego.precio : 'Gratis'}" style="font-weight: bold; color: var(--primary);">Precio</span>
+                    </div>
+                    
+                    <span th:text="${juego.categoria}" style="display: inline-block; background: rgba(0, 255, 136, 0.1); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-bottom: 10px; width: fit-content;">Categoría</span>
+                    
+                    <p th:text="${juego.descripcion}" style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin: 0; margin-bottom: 20px; flex-grow: 1;">Descripción breve del juego.</p>
+                    
+                    <button class="btn btn-primary" style="width: 100%; text-align: center;" onclick="alert('¡Gracias por tu interés! Esta función estará disponible pronto.')">Adquirir Juego</button>
                 </div>
             </div>
 
-            <div class="empty" th:if="${#lists.isEmpty(juegos)}">
-                No hay juegos en la bóveda aún. ¡Sé el primero en subir uno!
-            </div>
         </div>
     </main>
 </th:block>
+
+

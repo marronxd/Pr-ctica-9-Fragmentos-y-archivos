@@ -1,42 +1,73 @@
-<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.w3.org/1999/xhtml">
-    <title>Subir Juego - GamesShop</title>
-
+<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+    <title th:text="${juego?.id == null ? 'Subir Juego - GameVault' : 'Editar Juego - GameVault'}">Subir Juego - GameVault</title>
     <main class="container">
         <div class="panel" style="max-width: 600px; margin: 0 auto;">
-            <h2 class="text-gradient" style="margin-top: 0;">Añadir Nuevo Juego</h2>
-            <p class="muted" style="margin-bottom: 30px;">
-                Sube la información y la portada de un nuevo juego a la bóveda.
+
+            <h2 class="text-gradient" style="margin-top: 0;" th:text="${juego?.id == null ? 'Añadir Nuevo Juego' : 'Editar Juego'}">Añadir Nuevo Juego</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;" th:text="${juego?.id == null ? 'Sube la información y la portada de un nuevo juego a la bóveda.' : 'Modifica los detalles de tu juego.'}">
+                Sube la información...
             </p>
 
-            <!-- enctype="multipart/form-data" es lo que permite empaquetar archivos -->
-            <form th:action="@{/juegos}" method="post" enctype="multipart/form-data">
+            <!-- Cambiamos la URL de acción si es edición o creación -->
+            <form th:action="${juego?.id == null ? '/juegos' : '/juegos/editar/' + juego?.id}" method="post" enctype="multipart/form-data">
 
                 <div class="form-group">
                     <label for="titulo" class="form-label">Título del Juego</label>
-                    <input type="text" id="titulo" name="titulo" required class="form-control">
+                    <input type="text" id="titulo" name="titulo" th:value="${juego.titulo}" required class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria" class="form-label">Categoría</label>
+                    <select id="categoria" name="categoria" required class="form-control">
+                        <option value="" disabled th:selected="${juego.categoria == null}">Selecciona una categoría</option>
+                        <option value="Acción" th:selected="${juego.categoria == 'Acción'}">Acción</option>
+                        <option value="Aventura" th:selected="${juego.categoria == 'Aventura'}">Aventura</option>
+                        <option value="RPG" th:selected="${juego.categoria == 'RPG'}">RPG</option>
+                        <option value="Shooter" th:selected="${juego.categoria == 'Shooter'}">Shooter</option>
+                        <option value="Estrategia" th:selected="${juego.categoria == 'Estrategia'}">Estrategia</option>
+                        <option value="Deportes" th:selected="${juego.categoria == 'Deportes'}">Deportes</option>
+                        <option value="Carreras" th:selected="${juego.categoria == 'Carreras'}">Carreras</option>
+                        <option value="Plataformas" th:selected="${juego.categoria == 'Plataformas'}">Plataformas</option>
+                        <option value="Lucha" th:selected="${juego.categoria == 'Lucha'}">Lucha</option>
+                        <option value="Terror" th:selected="${juego.categoria == 'Terror'}">Terror</option>
+                        <option value="Simulación" th:selected="${juego.categoria == 'Simulación'}">Simulación</option>
+                        <option value="Puzzle" th:selected="${juego.categoria == 'Puzzle'}">Puzzle</option>
+                        <option value="Sandbox" th:selected="${juego.categoria == 'Sandbox'}">Sandbox</option>
+                        <option value="Sistema" th:selected="${juego.categoria == 'Sistema'}">Sistema</option>
+                        <option value="Otro" th:selected="${juego.categoria == 'Otro'}">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="precio" class="form-label">Precio ($)</label>
+                    <input type="number" step="0.01" id="precio" name="precio" th:value="${juego.precio}" required class="form-control" placeholder="0.00">
                 </div>
 
                 <div class="form-group">
                     <label for="descripcion" class="form-label">Descripción Breve</label>
-                    <textarea id="descripcion" name="descripcion" rows="4" required
-                              class="form-control" style="resize: vertical;"></textarea>
+                    <textarea id="descripcion" name="descripcion" rows="4" required class="form-control" style="resize: vertical;" th:text="${juego.descripcion}"></textarea>
                 </div>
 
-                <div class="form-group upload-box">
-                    <label for="portada" class="form-label" style="color: var(--primary-light);">
-                        Subir Portada (Imagen)
+                <div class="form-group" style="background-color: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; border: 1px dashed var(--primary);">
+                    <label for="portada" class="form-label" style="color: var(--primary);">
+                        📸 Subir Portada (Imagen)
                     </label>
-                    <input type="file" id="portada" name="portada" accept="image/*" required
-                           class="form-control" style="border: none; background: transparent;">
-                    <p class="muted" style="font-size: 0.9rem; margin-top: 10px; margin-bottom: 0;">
+
+                    <!-- Si es edición, la portada es opcional -->
+                    <input type="file" id="portada" name="portada" accept="image/*" th:required="${juego?.id == null}" class="form-control" style="border: none; background: transparent; padding-left: 0;">
+
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; margin-bottom: 0;">
+                        <span th:if="${juego?.id != null}">Dejar en blanco para mantener la imagen actual. </span>
                         El tamaño máximo configurado en el servidor es de <b>2MB</b> por archivo.
                     </p>
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;" th:text="${juego?.id == null ? 'Guardar en la Bóveda' : 'Actualizar Juego'}">
                     Guardar en la Bóveda
                 </button>
             </form>
         </div>
     </main>
+
 </th:block>
+
